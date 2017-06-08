@@ -19,6 +19,7 @@ import us.codecraft.webmagic.selector.Selectable;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -160,17 +161,21 @@ public class ProcessorMain implements PageProcessor{
                 du.setCityid(cityCode);
                 du.setUrl(districtPageUrl);
                 districturlService.saveSelective(du);
+            }
 
+            Distrnames dn = new Distrnames();
+            dn.setDistrictid(districtCode);
+            dn.setCityid(cityCode);
+            Map param = new HashMap();
+            param.put("districtid", districtCode);
+            param.put("cityid", cityCode);
+            Long distrnameCount = (Long) residenceService.selectCustomSqlToObject("getDistrnameByCityidAndDistrictid", param);
+            if(distrnameCount == 0){
                 //保存区名和区拼音的关系记录
-                Distrnames dn = new Distrnames();
                 dn.setDistrict(district);
-                dn.setDistrictid(districtCode);
-                dn.setCityid(cityCode);
                 dn.setCity(city);
                 distrnamesDao.saveSelective(dn);
             }
-
-
             Request request = new Request(link).putExtra("districtCode", districtCode).putExtra("cityCode", cityCode);
             page.addTargetRequest(request);
         }

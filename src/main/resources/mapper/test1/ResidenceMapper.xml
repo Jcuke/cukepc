@@ -264,4 +264,8 @@ where r.cityid= #{cityid} group by r.districtid
         group by r.cityid
     </select>
 
+    <select id="getDistrnameByCityidAndDistrictid" resultType="java.lang.Long" parameterType="java.util.Map">
+        select count(1) from distrnames where districtid=#{districtid} and cityid=#{cityid}
+    </select>
+
 </mapper>
